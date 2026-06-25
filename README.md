@@ -116,3 +116,26 @@ az vm create \
   --public-ip-sku Standard
 
 ```
+
+###### Connectivity Validation
+
+Internal communication was validated by SSH-ing into the Jumper VM and pinging the private VM in the Web Subnet.
+
+Jumper VM Public IP: 20.230.203.156
+
+Web VM Private IP: 10.0.1.4
+
+###### SSH into the Jumper VM
+
+> ssh azureuser@20.230.203.156
+
+###### Ping the Web VM from inside the Jumper
+
+> ping 10.0.1.4
+
+
+###### Cleanup
+
+To avoid incurring unnecessary costs, the resource group and all associated resources were deleted after the project was validated.
+
+> az group delete --name rg-networking-project --yes --no-wait
