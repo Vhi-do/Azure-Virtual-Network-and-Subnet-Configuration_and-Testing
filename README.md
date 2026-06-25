@@ -74,3 +74,45 @@ az network vnet subnet create \
   --address-prefix 10.0.3.0/24
 
   ```
+
+######  5. Deploy Test Virtual Machines
+
+Two VMs were deployed to test network isolation and internal connectivity.
+
+- vm-web-test: Deployed in the Web Subnet with no public IP.
+
+- vm-jumper: Deployed in the App Subnet with a public IP to act as a bastion host.
+
+**BASH**
+
+###### Deploy the Web Test VM (No public IP)
+
+```
+
+az vm create \
+  --resource-group rg-networking-project \
+  --name vm-web-test \
+  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts:latest \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --vnet-name vnet-core-architecture \
+  --subnet snet-web \
+  --public-ip-address ""
+
+```
+
+###### Deploy the Jumper VM (With public IP for SSH access)
+
+```
+
+az vm create \
+  --resource-group rg-networking-project \
+  --name vm-jumper \
+  --image Canonical:0001-com-ubuntu-server-focal:20_04-lts:latest \
+  --admin-username azureuser \
+  --ssh-key-values "$(cat ~/.ssh/id_ed25519.pub)" \
+  --vnet-name vnet-core-architecture \
+  --subnet snet-app \
+  --public-ip-sku Standard
+
+```
